@@ -5,15 +5,23 @@ from sim_class import Simulation
 import random
 
 class OT2Env(gym.Env):
-    def __init__(self, render=False, max_steps=1000, goal_range=0.3, threshold=0.001, reward_distance_scale=100, step_penalty=-1, bonus_reward=100):
+    def __init__(self, render=False, max_steps=1000, threshold=0.001, reward_distance_scale=100, step_penalty=-1, bonus_reward=100):
         super(OT2Env, self).__init__()
         self.render = render
         self.max_steps = max_steps
-        self.goal_range = goal_range # defines the boundaries in which the goal is set
         self.threshold = threshold # defines the threshold for when the task is considered done
         self.reward_distance_scale = reward_distance_scale # defines how much the distance rewards are scaled by.
         self.step_penalty = step_penalty # defines the penalty to be given for each step
         self.bonus_reward = bonus_reward # defines the reward for when the agent reaches the target
+
+        # Define the goal position limits from the provided information
+        self.goal_x_min = -0.1870
+        self.goal_x_max = 0.2531
+        self.goal_y_min = -0.1705
+        self.goal_y_max = 0.2209
+        self.goal_z_min = 0.1197
+        self.goal_z_max = 0.2209
+        
 
         # Create the simulation environment
         self.sim = Simulation(num_agents=1, render=self.render)
@@ -39,11 +47,9 @@ class OT2Env(gym.Env):
 
         # Reset the state of the environment to an initial state
         # Set a random goal position within the specified range
-        low_bound = -self.goal_range/2
-        high_bound = self.goal_range/2
-        self.goal_position = np.array([random.uniform(low_bound, high_bound), 
-                                       random.uniform(low_bound, high_bound),
-                                       random.uniform(low_bound, high_bound)])
+        self.goal_position = np.array([random.uniform(self.goal_x_min, self.goal_x_max), 
+                                       random.uniform(self.goal_y_min, self.goal_y_max),
+                                       random.uniform(self.goal_z_min, self.goal_z_max)])
         
         # Call the environment reset function to get initial observation
         observation = self.sim.reset(num_agents=1)  
@@ -131,5 +137,3 @@ class OT2Env(gym.Env):
 
     def close(self):
         self.sim.close()  # Close the simulation
-
-    
