@@ -10,7 +10,7 @@ import numpy as np
 os.environ["WANDB_API_KEY"] = "4daea85f8e1f3362f5121c37348bc7da52586b7f"
 # Initialize ClearML Task
 task = Task.init(project_name='Mentor Group S/Group 3',  # NB: Replace YourName with your own name
-                 task_name='train-ot2-rl_230036')
+                 task_name='rl_230036')
 
 task.set_base_docker('deanis/2023y2b-rl:latest')
 
@@ -40,7 +40,7 @@ parser.add_argument("--eval_freq", type=int, default=20000, help="Frequency of e
 args = parser.parse_args()
 
 # Initialize wandb
-run = wandb.init(project="RL_OT2", sync_tensorboard=True, config=vars(args))
+run = wandb.init(project="RL_OT2_V2", sync_tensorboard=True, config=vars(args))
 
 # Initialize Environment
 env = OT2Env(render=False, threshold=args.threshold,
