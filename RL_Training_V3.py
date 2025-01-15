@@ -4,7 +4,6 @@ import argparse
 from clearml import Task
 from stable_baselines3 import PPO
 from ot2_env_wrapper_V3 import OT2Env # use this if the previous version of the wrapper is used
-from my_env import OT2Env # Import the wrapper with the new reward
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
 
