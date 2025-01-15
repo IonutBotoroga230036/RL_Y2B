@@ -35,7 +35,7 @@ task = Task.init(project_name='Mentor Group S/Group 3',
                  task_name='RL_best_model_230036')
 task.set_base_docker('deanis/2023y2b-rl:latest')
 task.connect(args) # logs arguments to clearml
-# task.execute_remotely(queue_name="default") # removed to allow local execution
+task.execute_remotely(queue_name="default") # removed to allow local execution
 
 # Initialize wandb
 run = wandb.init(project="RL_OT2_V3", sync_tensorboard=True, config=vars(args))
