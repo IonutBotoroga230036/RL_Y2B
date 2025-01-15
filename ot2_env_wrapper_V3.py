@@ -100,6 +100,7 @@ class OT2Env(gym.Env):
         # Check if the task is complete (distance below threshold and staying still for some steps)
         if distance <= self.threshold:
             self.close2goal = True
+            reward += 30
             if self.set_step_2_stop == False:
                 self.steps_taken_2_stop = self.steps
                 self.set_step_2_stop = True
@@ -120,6 +121,30 @@ class OT2Env(gym.Env):
             truncated = True
         else:
             truncated = False
+
+        # # Check if the task is complete (distance below threshold and staying still for some steps)
+        # if distance <= self.threshold:
+        #     self.close2goal = True
+        #     if self.set_step_2_stop == False:
+        #         self.steps_taken_2_stop = self.steps
+        #         self.set_step_2_stop = True
+        #     if self.steps - self.steps_taken_2_stop >= 4:
+        #         self.reward_at_stop =  self.bonus_reward
+        #         reward += self.reward_at_stop
+        #         self.stopped_at_goal = True
+        #         terminated = True
+        #     else:
+        #         terminated = False
+        # else:
+        #     self.close2goal = False  # if it goes outside threshold, reset steps for stopping logic
+        #     self.set_step_2_stop = False
+        #     terminated = False
+
+        # # Check if the episode should be truncated (max steps reached)
+        # if self.steps >= self.max_steps:
+        #     truncated = True
+        # else:
+        #     truncated = False
 
         info = {'distance': distance,
                 'speed':observation[6],
