@@ -37,6 +37,7 @@ class OT2Env(gym.Env):
         self.stopped_at_goal = False  # boolean to check if the agent stopped at goal
         self.reward_at_stop = 0  # final reward given at termination when stopped at goal
         self.prev_pos = None # previous position of the pipette
+        self.stagnation_step = 0
 
     def reset(self, seed=None):
         # Set the seed for reproducibility if provided
@@ -67,6 +68,7 @@ class OT2Env(gym.Env):
         self.reward_at_stop = 100
         self.prev_pos = None
         info = {}  # No additional info required
+        self.last_step = np.linalg.norm(observation[:3] - observation[3:6])
         return observation, info
 
     def step(self, action):
@@ -121,6 +123,14 @@ class OT2Env(gym.Env):
             truncated = True
         else:
             truncated = False
+
+        if distance < self.last_step:
+            self.stagnation_step = 0
+        else:
+            self.stagnation_step += 1
+
+        if self.stagnation_step > 50:
+            truncated = True
 
         # # Check if the task is complete (distance below threshold and staying still for some steps)
         # if distance <= self.threshold:

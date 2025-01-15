@@ -104,5 +104,6 @@ for i in range(total_timesteps // eval_freq):
 
 # Save the final model using wandb callback
 wandb_callback.on_training_end(locals(),{}) # saves the model to wandb
+model.save(f"models/{run.id}/final_model.zip") # this line saves the last model
 run.finish()
 env.close()
