@@ -27,7 +27,6 @@ parser.add_argument("--gae_lambda", type=float, default=0.95, help="Factor for t
 parser.add_argument("--clip_range", type=float, default=0.2, help="Clipping parameter for PPO")
 parser.add_argument("--policy", type=str, default='MlpPolicy', help="Policy network architecture")
 parser.add_argument("--hidden_units", type=int, default=64, help="Number of hidden units")
-parser.add_argument("--goal_range", type=float, default=0.3, help="Range of the goal sampling")
 parser.add_argument("--threshold", type=float, default=0.001, help="Threshold for finishing the task")
 parser.add_argument("--reward_distance_scale", type=int, default=100, help="Scale of the distance reward")
 parser.add_argument("--step_penalty", type=float, default=-1, help="Penalty of each step taken")
