@@ -43,7 +43,7 @@ args = parser.parse_args()
 run = wandb.init(project="RL_OT2", sync_tensorboard=True, config=vars(args))
 
 # Initialize Environment
-env = OT2Env(render=False, goal_range=args.goal_range, threshold=args.threshold,
+env = OT2Env(render=False, threshold=args.threshold,
              reward_distance_scale=args.reward_distance_scale, step_penalty=args.step_penalty,
              bonus_reward=args.bonus_reward)
 
