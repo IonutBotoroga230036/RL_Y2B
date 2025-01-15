@@ -3,7 +3,7 @@ import wandb
 import argparse
 from clearml import Task
 from stable_baselines3 import PPO
-from my_env import OT2Env  # Import the new env
+from ot2_env_wrapper_V4 import OT2Env  # Import the new env
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
 
