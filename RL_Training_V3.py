@@ -95,8 +95,8 @@ for i in range(total_timesteps // eval_freq):
                 obs = env.reset()[0]
                 done = True
     
-    avg_eval_rew = np.mean(eval_ep_rewards) if eval_ep_rewards else -np.inf
-    avg_eval_length = np.mean(eval_ep_lengths) if eval_ep_lengths else -np.inf
+    avg_eval_rew = np.mean(eval_ep_rewards)
+    avg_eval_length = np.mean(eval_ep_lengths)
     wandb.log({"eval/ep_rew_mean": avg_eval_rew,
                "eval/ep_length_mean": avg_eval_length})
     print(f"Evaluation of training set: Avg reward {avg_eval_rew:.2f}, Avg Ep. length: {avg_eval_length:.2f}")
