@@ -39,7 +39,7 @@ task.execute_remotely(queue_name="default")  # removed to allow local execution
 run = wandb.init(project="RL_OT2_V3", sync_tensorboard=True, config=vars(args))
 
 # Initialize Environment
-env = OT2Env(render=False, threshold=args.threshold, step_penalty=args.step_penalty,
+env = OT2Env(render=False, threshold=args.threshold,
              bonus_reward=args.bonus_reward)
 
 # Initialize PPO model
