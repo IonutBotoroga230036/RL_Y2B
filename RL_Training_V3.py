@@ -24,7 +24,7 @@ parser.add_argument("--policy", type=str, default='MlpPolicy', help="Policy netw
 parser.add_argument("--hidden_units", type=int, default=64, help="Number of hidden units")
 parser.add_argument("--threshold", type=float, default=0.0001, help="Threshold for finishing the task")
 parser.add_argument("--bonus_reward", type=int, default=100, help="Bonus given to the agent for finishing the task")
-parser.add_argument("--total_timesteps", type=int, default=200000, help="Total timesteps to train")
+parser.add_argument("--total_timesteps", type=int, default=500000, help="Total timesteps to train")
 parser.add_argument("--eval_freq", type=int, default=20000, help="Frequency of evaluation")
 
 
