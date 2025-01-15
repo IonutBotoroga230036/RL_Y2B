@@ -65,7 +65,7 @@ class OT2Env(gym.Env):
         reward = -distance_to_goal  # Negative distance as reward (closer = better)
 
         # Check if the task is complete (distance below threshold)
-        threshold = 0.05  # Example threshold, adjust based on the task's scale
+        threshold = 0.0001  # Example threshold, adjust based on the task's scale
         if distance_to_goal < threshold:
             terminated = True
             reward = 10.0  # Reward for completing the task
