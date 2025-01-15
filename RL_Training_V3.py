@@ -36,7 +36,7 @@ task.connect(args)  # logs arguments to clearml
 task.execute_remotely(queue_name="default")  # removed to allow local execution
 
 # Initialize wandb
-run = wandb.init(project="RL_OT2_V3", sync_tensorboard=True, config=vars(args))
+run = wandb.init(project="OT2_230036", sync_tensorboard=True, config=vars(args))
 
 # Initialize Environment
 env = OT2Env(render=False, threshold=args.threshold,
