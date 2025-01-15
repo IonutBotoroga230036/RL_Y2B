@@ -3,7 +3,7 @@ import wandb
 import argparse
 from clearml import Task
 from stable_baselines3 import PPO
-from ot2_env_wrapper import OT2Env
+from ot2_env_wrapper_V4 import OT2Env  # Import the new env
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
 
@@ -37,7 +37,7 @@ task.execute_remotely(queue_name="default")  # removed to allow local execution
 run = wandb.init(project="RL_OT2_V4", sync_tensorboard=True, config=vars(args))
 
 # Initialize Environment
-env = OT2Env(render=False) # changed environment parameters
+env = OT2Env(render=False)
 
 # Initialize PPO model
 model = PPO(args.policy, env,
