@@ -6,7 +6,7 @@ from stable_baselines3 import PPO
 from ot2_env_wrapper_V3 import OT2Env  # use this if the previous version of the wrapper is used
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
-
+os.environ["WANDB_API_KEY"] = "4daea85f8e1f3362f5121c37348bc7da52586b7f" # Add your wandb API key or setup the environment
 # Set CUDA device visibility if you do not have a CUDA device
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
