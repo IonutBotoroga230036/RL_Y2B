@@ -6,6 +6,7 @@ from stable_baselines3 import PPO
 from ot2_env_wrapper_V4 import OT2Env  # Import the new env
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
+from stable_baselines3.common.callbacks import EvalCallback
 
 # Set CUDA device visibility if you do not have a CUDA device
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -44,12 +45,27 @@ model = PPO(args.policy, env, verbose=1,
             policy_kwargs=dict(net_arch=[args.hidden_units, args.hidden_units]),
             tensorboard_log=f"runs/{run.id}",)
 
+# Create an evaluation environment
+eval_env = OT2Env(render=False)
+
+# Add EvalCallback to monitor performance and save the best model
+eval_callback = EvalCallback(eval_env,
+                             best_model_save_path=f"models/{run.id}/best_model",
+                             log_path=f"models/{run.id}/logs",
+                             eval_freq=args.eval_freq,
+                             n_eval_episodes=args.n_eval_episodes,
+                             deterministic=True,
+                             verbose=1)
+
 wandb_callback = WandbCallback(model_save_freq=1000,
                                 model_save_path=f"models/{run.id}",
-                                verbose=2,
-                                )
+                                verbose=2)
 
 time_steps = args.total_timesteps
 for i in range(10):
-    model.learn(total_timesteps=time_steps, callback=wandb_callback, progress_bar=True, reset_num_timesteps=False,tb_log_name=f"runs/{run.id}")
+    model.learn(total_timesteps=time_steps,
+                callback=[wandb_callback, eval_callback],  # Include EvalCallback in the callback list
+                progress_bar=True,
+                reset_num_timesteps=False,
+                tb_log_name=f"runs/{run.id}")
     model.save(f"models/{run.id}/{time_steps*(i+1)}")
