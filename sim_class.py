@@ -45,7 +45,7 @@ class Simulation:
         #p.createCollisionShape(shapeType=p.GEOM_BOX, halfExtents=[30, 305, 0.001])
 
         # define the pipette offset
-        self.pipette_offset = [0.073, 0.0895, 0.07]
+        self.pipette_offset = [0.073, 0.0895, 0.0895]
         # dictionary to keep track of the current pipette position per robot
         self.pipette_positions = {}
 
@@ -448,6 +448,3 @@ class Simulation:
 
 
     
-
-
-
