@@ -4,7 +4,7 @@ import argparse
 from clearml import Task
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
-from ot2_env_wrapper_V4 import OT2Env  # Import the new env
+from ot2_env_wrapper_V5 import OT2Env  # Import the new env
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
 
