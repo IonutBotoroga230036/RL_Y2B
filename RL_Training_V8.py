@@ -12,17 +12,17 @@ import numpy as np
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--learning_rate", type=float, default=6e-5, help="Learning rate for the optimizer")
-parser.add_argument("--batch_size", type=int, default=32, help="Batch size for updating policy and value networks")
+parser.add_argument("--learning_rate", type=float, default=0.0006, help="Learning rate for the optimizer")
+parser.add_argument("--batch_size", type=int, default=128, help="Batch size for updating policy and value networks")
 parser.add_argument("--n_steps", type=int, default=1024, help="Number of steps to run for each update")
 parser.add_argument("--n_epochs", type=int, default=10, help="Number of epochs to update policy network")
 parser.add_argument("--gamma", type=float, default=0.99, help="Discount factor")
 parser.add_argument("--gae_lambda", type=float, default=0.95, help="Factor for trade-off of bias vs variance in GAE")
 parser.add_argument("--policy", type=str, default='MlpPolicy', help="Policy network architecture")
 parser.add_argument("--hidden_units", type=int, default=32, help="Number of hidden units")
-parser.add_argument("--total_timesteps", type=int, default=2500000, help="Total timesteps to train")
+parser.add_argument("--total_timesteps", type=int, default=5000000, help="Total timesteps to train")
 parser.add_argument("--eval_freq", type=int, default=10000, help="Frequency of evaluation")
-parser.add_argument("--n_eval_episodes", type=int, default=5, help="Number of evaluation episodes")
+parser.add_argument("--n_eval_episodes", type=int, default=6, help="Number of evaluation episodes")
 
 args = parser.parse_args()
 
