@@ -103,7 +103,7 @@ class OT2Env(gym.Env):
                 terminated = True
             else:
                 terminated = False
-
+    
         
         # next we need to check if the episode should be truncated, we can check if the current number of steps is greater than the maximum number of steps
         if self.steps + 1 == self.max_steps:
