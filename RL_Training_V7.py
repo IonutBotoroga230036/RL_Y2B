@@ -21,6 +21,8 @@ parser.add_argument("--gae_lambda", type=float, default=0.95, help="Factor for t
 parser.add_argument("--policy", type=str, default='MlpPolicy', help="Policy network architecture")
 parser.add_argument("--hidden_units", type=int, default=32, help="Number of hidden units")
 parser.add_argument("--total_timesteps", type=int, default=2500000, help="Total timesteps to train")
+parser.add_argument("--eval_freq", type=int, default=10000, help="Frequency of evaluation")
+parser.add_argument("--n_eval_episodes", type=int, default=6, help="Number of evaluation episodes")
 
 args = parser.parse_args()
 
