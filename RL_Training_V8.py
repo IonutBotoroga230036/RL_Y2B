@@ -10,7 +10,7 @@ import numpy as np
 
 # Set CUDA device visibility if you do not have a CUDA device
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
+os.environ["WANDB_API_KEY"] = "4daea85f8e1f3362f5121c37348bc7da52586b7f"
 parser = argparse.ArgumentParser()
 parser.add_argument("--learning_rate", type=float, default=0.0006, help="Learning rate for the optimizer")
 parser.add_argument("--batch_size", type=int, default=128, help="Batch size for updating policy and value networks")
