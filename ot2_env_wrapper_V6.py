@@ -9,7 +9,6 @@ class OT2Env(gym.Env):
         super(OT2Env, self).__init__()
         self.render = render
         self.max_steps = max_steps
-
         # Create the simulation environment
         self.sim = Simulation(num_agents=1, render=self.render)
 
@@ -19,17 +18,22 @@ class OT2Env(gym.Env):
         self.observation_space = gym.spaces.Box(-np.inf, np.inf, (6,), dtype=np.float32) # Removed speed
 
         # keep track of the number of steps
+        self.success_counter = 0
+        self.count = 0
         self.steps = 0
         self.robotId = 0
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, goal_position=None):
         # being able to set a seed is required for reproducibility
         if seed is not None:
             np.random.seed(seed)
 
         # Reset the state of the environment to an initial state
         # set a random goal position for the agent, consisting of x, y, and z coordinates within the working area (you determined these values in the previous datalab task)
-        self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1195, 0.2896)]
+        if goal_position is not None:
+            self.goal_position = goal_position
+        else:
+            self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1195, 0.2896)]
 
         # Call the environment reset function
         observation = self.sim.reset(num_agents=1)
@@ -96,8 +100,14 @@ class OT2Env(gym.Env):
                 self.step_2_stop = self.steps
                 self.set_step_2_stop = True
 
-            if d_goal < 0.001 and self.steps - self.step_2_stop >= 3:
-                self.reward_at_stop =  50
+            if d_goal < 0.001 and self.steps - self.step_2_stop >= self.count:
+                if self.success_counter<50:
+                    self.success_counter += 1
+                self.count = (self.success_counter // 10) - 1
+                if self.count == 0:
+                    self.reward_at_stop = 10
+                else:
+                    self.reward_at_stop = self.count * 25
                 reward += self.reward_at_stop
                 self.stopped_at_goal = True
                 terminated = True
