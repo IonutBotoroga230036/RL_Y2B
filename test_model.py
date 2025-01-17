@@ -45,7 +45,7 @@ class OT2EnvTest(gym.Env):
 
         # Reset the state of the environment to an initial state
         # Set a fixed goal position for testing purposes
-        self.goal_position = np.array([0.2, 0.2, 0.05])
+        self.goal_position = np.array([0.2, 0.2, 0.25])
 
         # Call the environment reset function to get initial observation
         observation = self.sim.reset(num_agents=1)

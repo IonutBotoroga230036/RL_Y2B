@@ -27,7 +27,7 @@ def test_pid_controller(kp, ki, kd, dt, target_pos, max_steps=1000, threshold=0.
      controller_x = PID(kp, ki, kd)  # create controller object
      controller_y = PID(kp, ki, kd)
      controller_z = PID(kp, ki, kd)
-     all_error =0
+     all_error = 0
      # Reset the simulation to the initial position, extract the pipette position
      observation = sim.reset(num_agents=1)
      robotId = int(list(observation.keys())[-1][-1])
@@ -42,9 +42,9 @@ def test_pid_controller(kp, ki, kd, dt, target_pos, max_steps=1000, threshold=0.
 
         #  # Limit the action to be between -1 and 1
         #  control_output = np.clip(control_output, -1, 1)
-
+         control_output =[controller_x(current_pos[0]),controller_x(current_pos[1]),controller_x(current_pos[2])]
          # Send action to environment (needs to be a list)
-         action = np.concatenate([control_output, [0]])
+         action = np.concatenate(control_output, [0])
          observation = sim.run([action])
 
          # get the new pipette position
@@ -74,7 +74,7 @@ def test_pid_controller(kp, ki, kd, dt, target_pos, max_steps=1000, threshold=0.
 
 if __name__ == "__main__":
     # Example Usage:
-    kp = [1.2, 1.2, 0.02]
+    kp = [15, 15, 15]
     ki = [0, 0, 0]
     kd = [0, 0, 0]
     dt = 1
@@ -87,14 +87,14 @@ if __name__ == "__main__":
     goal_y_min = -0.1705
     goal_y_max = 0.2209
     goal_z_min = 0.1197
-    goal_z_max = 0.2209
+    goal_z_max = 0.280
     cnt = 0
     for i in range(num_tests):
         # Generate a random target position within valid range
         target_pos = [
-            round(random.uniform(goal_x_min, goal_x_max),4),
-            round(random.uniform(goal_y_min, goal_y_max),4),
-            round(random.uniform(goal_z_min, goal_z_max),4),
+            round(random.uniform(goal_x_min, goal_x_max),5),
+            round(random.uniform(goal_y_min, goal_y_max),5),
+            round(random.uniform(goal_z_min, goal_z_max),5),
         ]
         print(f"\n--- Test {i + 1} ---")
         print(f"Target position: {target_pos}")
