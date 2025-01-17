@@ -28,7 +28,7 @@ args = parser.parse_args()
 
 # Initialize ClearML Task with arguments for logging
 task = Task.init(project_name='Mentor Group S/Group 3',
-                 task_name='RL_230036_W_V5_T_V9')
+                 task_name='RL_230036_W_V6_T_V9')
 task.set_base_docker('deanis/2023y2b-rl:latest')
 task.connect(args)  # logs arguments to clearml
 task.execute_remotely(queue_name="default")  # removed to allow local execution
