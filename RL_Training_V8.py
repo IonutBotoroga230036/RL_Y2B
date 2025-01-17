@@ -20,15 +20,15 @@ parser.add_argument("--gamma", type=float, default=0.99, help="Discount factor")
 parser.add_argument("--gae_lambda", type=float, default=0.95, help="Factor for trade-off of bias vs variance in GAE")
 parser.add_argument("--policy", type=str, default='MlpPolicy', help="Policy network architecture")
 parser.add_argument("--hidden_units", type=int, default=32, help="Number of hidden units")
-parser.add_argument("--total_timesteps", type=int, default=5000000, help="Total timesteps to train")
+parser.add_argument("--total_timesteps", type=int, default=3000000, help="Total timesteps to train")
 parser.add_argument("--eval_freq", type=int, default=10000, help="Frequency of evaluation")
-parser.add_argument("--n_eval_episodes", type=int, default=6, help="Number of evaluation episodes")
+parser.add_argument("--n_eval_episodes", type=int, default=5, help="Number of evaluation episodes")
 
 args = parser.parse_args()
 
 # Initialize ClearML Task with arguments for logging
 task = Task.init(project_name='Mentor Group S/Group 3',
-                 task_name='RL_230036_W_V4_T_V7')
+                 task_name='RL_230036_W_V5_T_V8')
 task.set_base_docker('deanis/2023y2b-rl:latest')
 task.connect(args)  # logs arguments to clearml
 task.execute_remotely(queue_name="default")  # removed to allow local execution
