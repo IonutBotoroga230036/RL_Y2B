@@ -101,7 +101,8 @@ class OT2Env(gym.Env):
                 self.set_step_2_stop = True
 
             if d_goal < 0.001 and self.steps - self.step_2_stop >= self.count:
-                self.success_counter += 1
+                if self.success_counter<50:
+                    self.success_counter += 1
                 self.count = (self.success_counter // 10) - 1
                 if self.count == 0:
                     self.reward_at_stop = 10
