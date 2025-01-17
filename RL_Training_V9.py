@@ -4,7 +4,7 @@ import argparse
 from clearml import Task
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
-from ot2_env_wrapper_V6 import OT2Env  # Import the new env
+from ot2_env_wrapper_V7 import OT2Env  # Import the new env
 from wandb.integration.sb3 import WandbCallback
 import numpy as np
 
@@ -28,14 +28,14 @@ args = parser.parse_args()
 
 # Initialize ClearML Task with arguments for logging
 task = Task.init(project_name='Mentor Group S/Group 3',
-                 task_name='RL_230036_W_V6_T_V9')
+                 task_name='RL_230036_W_V7_T_V9')
 task.set_base_docker('deanis/2023y2b-rl:latest')
 task.connect(args)  # logs arguments to clearml
 task.execute_remotely(queue_name="default")  # removed to allow local execution
 
 env = OT2Env(render=False)
 
-run = wandb.init(project="OT2_230036", sync_tensorboard=True)
+run = wandb.init(project="OT2_230036_V9", sync_tensorboard=True)
 
 model = PPO(args.policy, env, verbose=1, 
             learning_rate=args.learning_rate, 

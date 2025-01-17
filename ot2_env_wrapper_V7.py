@@ -33,7 +33,7 @@ class OT2Env(gym.Env):
         if goal_position is not None:
             self.goal_position = goal_position
         else:
-            self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1195, 0.2896)]
+            self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1695, 0.2896)]
 
         # Call the environment reset function
         observation = self.sim.reset(num_agents=1)
