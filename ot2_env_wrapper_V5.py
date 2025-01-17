@@ -29,7 +29,7 @@ class OT2Env(gym.Env):
 
         # Reset the state of the environment to an initial state
         # set a random goal position for the agent, consisting of x, y, and z coordinates within the working area (you determined these values in the previous datalab task)
-        self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1195, 0.2896)]
+        self.goal_position = [random.uniform(-0.1870, 0.2529), random.uniform(-0.1705, 0.219), random.uniform(0.1695, 0.2896)]
 
         # Call the environment reset function
         observation = self.sim.reset(num_agents=1)
