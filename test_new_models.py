@@ -1,6 +1,7 @@
 import numpy as np
 import time
 import gymnasium as gym
+import random
 from stable_baselines3 import PPO
 from sim_class import Simulation
 
@@ -21,6 +22,11 @@ class OT2EnvTest(gym.Env):
         # keep track of the number of steps
         self.steps = 0
         self.robotId = 0
+        self.goal_position = None # Initialize goal position to None
+    
+    def set_goal_position(self, goal_position):
+        """Sets the goal position for the environment."""
+        self.goal_position = np.array(goal_position)
 
     def reset(self, seed=None):
         # being able to set a seed is required for reproducibility
@@ -28,8 +34,7 @@ class OT2EnvTest(gym.Env):
             np.random.seed(seed)
 
         # Reset the state of the environment to an initial state
-        # set a random goal position for the agent, consisting of x, y, and z coordinates within the working area (you determined these values in the previous datalab task)
-        self.goal_position = np.array([0.1, 0, 0.12])
+        # goal position is now being set by set_goal_position before calling reset
 
         # Call the environment reset function
         observation = self.sim.reset(num_agents=1)
@@ -85,9 +90,6 @@ class OT2EnvTest(gym.Env):
         
         base_reward = reward
         self.prev_d_goal = d_goal
-
-        reward -= 1
-        
         # next we need to check if the if the task has been completed and if the episode should be terminated
         # To do this we need to calculate the distance between the pipette position and the goal position and if it is below a certain threshold, we will consider the task complete. 
         # What is a reasonable threshold? Think about the size of the pipette tip and the size of the plants.
@@ -126,9 +128,9 @@ class OT2EnvTest(gym.Env):
     def close(self):
         self.sim.close()
     
-def test_rl_model(model_path, max_steps=1000, threshold=0.001, stay_steps=50, render=False):
+def test_rl_model(model_path, max_steps=1000, threshold=0.001, stay_steps=50, render=False, num_tests = 10):
     """
-    Tests a trained RL model by moving the pipette tip to a target position and staying there for some time.
+    Tests a trained RL model by moving the pipette tip to multiple target positions and staying there for some time.
 
     Parameters:
         model_path (str): Path to the trained RL model (.zip file).
@@ -136,51 +138,83 @@ def test_rl_model(model_path, max_steps=1000, threshold=0.001, stay_steps=50, re
         threshold (float): Threshold value for the task to be considered complete.
         stay_steps (int): The number of steps the robot should stay inside threshold before considering the target reached.
         render (bool): If true the rendering is enabled for the simulation.
+        num_tests (int): The number of random positions to be generated
 
     Returns:
         bool: Returns true if the position was achieved within the specified tolerance, false otherwise
     """
     env = OT2EnvTest(render=render)
     model = PPO.load(model_path)
+    
+    # Define the goal position limits
+    goal_x_min = -0.1870
+    goal_x_max = 0.2531
+    goal_y_min = -0.1705
+    goal_y_max = 0.2209
+    goal_z_min = 0.1695
+    goal_z_max = 0.2896
+    
+    cnt = 0
+    for i in range(num_tests):
+         # Generate a random target position within valid range
+        target_pos = [
+            random.uniform(goal_x_min, goal_x_max),
+            random.uniform(goal_y_min, goal_y_max),
+            random.uniform(goal_z_min, goal_z_max),
+        ]
+        print(f"\n--- Test {i + 1} ---")
+        print(f"Target position: {target_pos}")
 
-    observation, _ = env.reset()
-    steps_in_threshold = 0
-    first_target_achieved_step = None
+        env.set_goal_position(target_pos) # Set new target position for the environment
+        observation, _ = env.reset()
+        
+        steps_in_threshold = 0
+        first_target_achieved_step = None
+        target_achieved = False
+        total_reward = 0
+        for step in range(max_steps):
+            action, _ = model.predict(observation, deterministic=True)
 
-    for step in range(max_steps):
-        action, _ = model.predict(observation, deterministic=True)
-
-        observation, reward, terminated, truncated, info = env.step(action)
-        distance_to_goal = info['d-goal'] # Changed to info['distance']
-         # Print the current pipette position and the distance to the goal
-        print(f"Step: {step}, Pipette Position: {observation[:3]}, Distance to Goal: {distance_to_goal}")
+            observation, reward, terminated, truncated, info = env.step(action)
+            distance_to_goal = info['d-goal'] # Changed to info['distance']
+             # Print the current pipette position and the distance to the goal
+            total_reward+= reward
+            print(f"Step: {step}, Pipette Position: {observation[:3]}, Distance to Goal: {distance_to_goal}, Reward: {total_reward}")
 
 
-        if distance_to_goal <= threshold:
-            steps_in_threshold += 1
-            if first_target_achieved_step is None: # set this variable to the first time the target was achieved
-                first_target_achieved_step = step
-            if steps_in_threshold >= stay_steps:
-                print(f"Target achieved at step: {first_target_achieved_step}")
-                env.close()
-                return True
+            if distance_to_goal <= threshold:
+                steps_in_threshold += 1
+                if first_target_achieved_step is None: # set this variable to the first time the target was achieved
+                   first_target_achieved_step = step
+                if steps_in_threshold >= stay_steps:
+                    print(f"Target achieved at step: {first_target_achieved_step}")
+                    target_achieved = True
+                    break
+            else:
+                 steps_in_threshold = 0
+                 first_target_achieved_step = None
+
+            if terminated or truncated:
+               break # if episode ends break the loop
+               
+        if target_achieved:
+            print("The target was successfully achieved")
+            cnt += 1
         else:
-            steps_in_threshold = 0
-            first_target_achieved_step = None
-
-        if terminated or truncated:
-            break # if episode ends break the loop
-
-    print("Maximum steps reached, target not achieved")
+             print("Maximum steps reached, target not achieved")
+        
     env.close()
-    return False
+    print(f"{cnt} successful")
+    return cnt == num_tests
+
 
 if __name__ == "__main__":
     model_path = "model(3).zip"  # Replace with your model path
     stay_steps = 10
-    achieved_target = test_rl_model(model_path, stay_steps=stay_steps, render=True)
+    num_tests = 10
+    achieved_all_targets = test_rl_model(model_path, stay_steps=stay_steps, render=True, num_tests=num_tests)
 
-    if achieved_target:
-        print("The target was successfully achieved")
+    if achieved_all_targets:
+        print("The model successfully achieved all targets.")
     else:
-        print("The target was NOT achieved")
+        print("The model did NOT achieve all targets.")
