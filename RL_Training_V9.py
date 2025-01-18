@@ -70,4 +70,5 @@ for i in range(10):
                 progress_bar=True,
                 reset_num_timesteps=False,
                 tb_log_name=f"runs/{run.id}")
+    wandb.save(f"models/{run.id}/best_model.zip")
     model.save(f"models/{run.id}/{time_steps*(i+1)}")

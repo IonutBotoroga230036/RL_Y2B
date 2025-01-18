@@ -209,7 +209,7 @@ def test_rl_model(model_path, max_steps=1000, threshold=0.001, stay_steps=50, re
 
 
 if __name__ == "__main__":
-    model_path = "model(3).zip"  # Replace with your model path
+    model_path = "model(4).zip"  # Replace with your model path
     stay_steps = 10
     num_tests = 10
     achieved_all_targets = test_rl_model(model_path, stay_steps=stay_steps, render=True, num_tests=num_tests)
