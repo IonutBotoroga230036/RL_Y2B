@@ -70,7 +70,12 @@ for i in range(10):
                 progress_bar=True,
                 reset_num_timesteps=False,
                 tb_log_name=f"runs/{run.id}")
+    # Ensure directories exist
+    os.makedirs(f"models/{run.id}", exist_ok=True)
+
+    # Save the best model and log it to ClearML and WandB
     best_model_path = f"models/{run.id}/best_model.zip"
     if os.path.exists(best_model_path):
         wandb.save(best_model_path)
+    task.upload_artifact(name="best_model", artifact_object=best_model_path)
     model.save(f"models/{run.id}/{time_steps*(i+1)}")
