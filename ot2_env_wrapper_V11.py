@@ -17,7 +17,7 @@ class OT2Env(gym.Env):
         # Define action and observation space
         # They must be gym.spaces objects
         self.action_space = gym.spaces.Box(-1, 1, (3,), dtype=np.float32)
-        self.observation_space = gym.spaces.Box(-np.inf, np.inf, (6,), dtype=np.float32) # Removed speed
+        self.observation_space = gym.spaces.Box(-np.inf, np.inf, (7,), dtype=np.float32)
 
         # keep track of the number of steps
         self.success_counter = 0
@@ -114,7 +114,7 @@ class OT2Env(gym.Env):
                 self.set_step_2_stop = True
 
             if d_goal < 0.001 and self.steps - self.step_2_stop >= self.count:
-                if self.success_counter<50:
+                if self.success_counter < 50:
                     self.success_counter += 1
                 self.count = (self.success_counter // 10) - 1
                 if self.count <= 0:
